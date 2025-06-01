@@ -19,5 +19,8 @@ async function bootstrap() {
   );
 
   await app.listen(process.env.PORT ?? 3000);
+
+  // aquí no funciona el módulo que hicimos, ya que está fuera del building blocks
+  console.log(`App running on port ${process.env.PORT}`) 
 }
 bootstrap();
