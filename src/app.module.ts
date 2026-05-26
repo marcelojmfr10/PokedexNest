@@ -28,7 +28,7 @@ import { JoiValidationSchema } from './config/joi.validation';
 
     CommonModule,
 
-    SeedModule
+    SeedModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

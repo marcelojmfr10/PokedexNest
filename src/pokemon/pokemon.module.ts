@@ -14,9 +14,9 @@ import { ConfigModule } from '@nestjs/config';
       {
         name: Pokemon.name,
         schema: PokemonSchema,
-      }
-    ])
+      },
+    ]),
   ],
-  exports: [MongooseModule]
+  exports: [MongooseModule],
 })
 export class PokemonModule {}

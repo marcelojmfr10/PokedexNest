@@ -13,14 +13,14 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true, // información que fluye por los dto
       transformOptions: {
-        enableImplicitConversion: true
-      }
-    })
+        enableImplicitConversion: true,
+      },
+    }),
   );
 
   await app.listen(process.env.PORT ?? 3000);
 
   // aquí no funciona el módulo que hicimos, ya que está fuera del building blocks
-  console.log(`App running on port ${process.env.PORT}`) 
+  console.log(`App running on port ${process.env.PORT}`);
 }
 bootstrap();

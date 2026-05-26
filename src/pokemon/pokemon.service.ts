@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
@@ -9,7 +14,6 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
-
   private defaultLimit: number;
 
   constructor(
@@ -17,7 +21,6 @@ export class PokemonService {
     private readonly pokemonModel: Model<Pokemon>,
     private readonly configService: ConfigService,
   ) {
-
     this.defaultLimit = configService.get<number>('defaultLimit')!;
   }
 
@@ -34,13 +37,15 @@ export class PokemonService {
   }
 
   findAll(paginationDto: PaginationDto) {
-
-    const {limit = this.defaultLimit, offset = 0} = paginationDto; 
-    return this.pokemonModel.find()
-    .limit(limit).skip(offset).sort({
-      no: 1,
-    }).select('-__v')
-
+    const { limit = this.defaultLimit, offset = 0 } = paginationDto;
+    return this.pokemonModel
+      .find()
+      .limit(limit)
+      .skip(offset)
+      .sort({
+        no: 1,
+      })
+      .select('-__v');
   }
 
   async findOne(term: string) {
@@ -57,10 +62,15 @@ export class PokemonService {
 
     // name
     if (!pokemon) {
-      pokemon = await this.pokemonModel.findOne({ name: term.toLowerCase().trim() });
+      pokemon = await this.pokemonModel.findOne({
+        name: term.toLowerCase().trim(),
+      });
     }
 
-    if (!pokemon) throw new NotFoundException(`Pokemon with id, name or no "${term}" not found`);
+    if (!pokemon)
+      throw new NotFoundException(
+        `Pokemon with id, name or no "${term}" not found`,
+      );
 
     return pokemon;
   }
@@ -85,8 +95,10 @@ export class PokemonService {
 
     // const result = await this.pokemonModel.findByIdAndDelete(id);
 
-    const { deletedCount, acknowledged } = await this.pokemonModel.deleteOne({ _id: id });
-    if (deletedCount === 0){
+    const { deletedCount, acknowledged } = await this.pokemonModel.deleteOne({
+      _id: id,
+    });
+    if (deletedCount === 0) {
       throw new BadRequestException(`Pokemon with id ${id} not found`);
     }
 
@@ -95,9 +107,13 @@ export class PokemonService {
 
   private handleExceptions(error: any) {
     if (error.code === 11000) {
-      throw new BadRequestException(`Pokemon exist in db ${JSON.stringify(error.keyValue)}`);
+      throw new BadRequestException(
+        `Pokemon exist in db ${JSON.stringify(error.keyValue)}`,
+      );
     }
     console.log(error);
-    throw new InternalServerErrorException(`Can't create pokemon - check server logs`);
+    throw new InternalServerErrorException(
+      `Can't create pokemon - check server logs`,
+    );
   }
 }
